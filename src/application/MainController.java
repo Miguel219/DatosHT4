@@ -5,9 +5,11 @@ import java.util.Scanner;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
@@ -20,11 +22,23 @@ public class MainController {
 	private Label result;
 	@FXML	
 	private FlowPane resultFlowPane;
+	@FXML
+	private ComboBox<String> comboBox1;
+	@FXML
+	private ComboBox<String> comboBox2;
+	@FXML
+	private Button button1;
+	@FXML
+	private Button button2;
 	
 	/**
-	 * Objeto de la clase que implementa Stack 
+	 * Objeto de las clase Stack 
 	 */
-	private StackImp stack;
+	private Stack<Integer> stack;
+	/**
+	 * Objeto de la clase AbstractList 
+	 */
+	private AbstractList<Integer> list;
 	/**
 	 * objeto de la clase que implementa Calculator
 	 */
@@ -33,7 +47,64 @@ public class MainController {
 	 * Es en donde se almacena la informacion leida en el archivo txt
 	 */
 	private Scanner s;
-	
+	/**
+	 * Es en donde se almacena el patron de diseno seleccionado
+	 */
+	private Integer selectedDesignPattern;
+	private Integer selectedList;
+	/**
+	 *	cambia la informacion del comboBox2 
+	 */
+	public void changeComboBox() {
+		String selectedValue = comboBox1.getValue();
+		comboBox2.setDisable(false);
+		if(selectedValue.equals("Stack"))
+			comboBox2.getItems().addAll("ArrayList","Lista","Vector");
+		else if(selectedValue.equals("Lista"))
+			comboBox2.getItems().addAll("Lista Simple","Lista Doble","Lista Circular");
+	}
+	/**
+	 *	setea el patron de diseno que se va a usar
+	 */
+	public void set() {
+		if(comboBox2.getValue()!=null) {
+			comboBox1.setDisable(true);
+			comboBox2.setDisable(true);
+			pathTextField.setDisable(false);
+			button1.setDisable(true);
+			button2.setDisable(false);
+			String selectedValue1 = comboBox1.getValue();
+			String selectedValue = comboBox2.getValue();
+			
+			if(selectedValue1.equals("Stack"))
+				selectedDesignPattern = 1;
+			else if(selectedValue1.equals("Lista"))
+				selectedDesignPattern = 2;
+			
+			if(selectedValue.equals("ArrayList")) {
+				stack = new StackArrayList<Integer>();
+			}else if(selectedValue.equals("Lista")) {
+				stack = new StackList<Integer>();
+			}else if(selectedValue.equals("Vector")) {
+				stack = new StackVector<Integer>();
+			}else if(selectedValue.equals("Lista Simple")) {
+				list = new SinglyLinkedList<Integer>();
+				selectedList=1;
+			}else if(selectedValue.equals("Lista Doble")) {
+				list = new DoublyLinkedList<Integer>();
+				selectedList=2;
+			}else if(selectedValue.equals("Lista Circular")) {
+				list = new CircularList<Integer>();
+				selectedList=3;
+			}
+		}else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Error en datos seleccionados");
+			alert.setContentText("Verifica que hayas seleccionado una opción");
+			alert.showAndWait();
+		}
+	}
 	/**
 	 *	lee el archivo txt 
 	 */
@@ -53,21 +124,60 @@ public class MainController {
 					try {
 						//Se intenta convertir a int
 						Integer intValue = Integer.parseInt(value);
-						stack.push(intValue);
+						if(selectedDesignPattern==1)
+							stack.push(intValue);
+						else if(selectedDesignPattern==2)
+							list.addLast(intValue);
 					} catch (Exception e) {
 						// TODO: handle exception
 						//Si no es int es un operando entonces ya se puede efectuar la operacion
 						//Se sacan la operacion y los dos operandos
 						String operacion = value;
-						int operando1 = stack.pop();
-						int operando2 = stack.pop();
+						int operando1 = 0;
+						int operando2 = 0;
+						if(selectedDesignPattern==1) {
+							operando1 = stack.pop();
+							operando2 = stack.pop();
+						} else if(selectedDesignPattern==2) {
+							if(selectedList==1) {
+								SinglyLinkedList<Integer> currentList = (SinglyLinkedList<Integer>)list;
+								operando2 = (int)currentList.removeFirst();
+								operando1 = (int)currentList.removeFirst();
+							}else if(selectedList==2) {
+								DoublyLinkedList<Integer> currentList = (DoublyLinkedList<Integer>)list;
+								operando1 = (int)currentList.removeLast();
+								operando2 = (int)currentList.removeLast();
+							}else if(selectedList==3) {
+								CircularList<Integer> currentList = (CircularList<Integer>)list;
+								operando1 = (int)currentList.removeLast();
+								operando2 = (int)currentList.removeLast();
+							}
+						}
 						//Se hace la operacion
 						int resultado = calculator.Calculate(operando1, operando2, operacion);
-						//Se guarda el resultado en la primera posicion del stack
-						stack.push(resultado);
+						//Se guarda el resultado en la primera posicion del stack o lista
+						if(selectedDesignPattern==1)
+							stack.push(resultado);
+						else if(selectedDesignPattern==2)
+							list.addLast(resultado);
 					}
 				}
-				Label label = new Label("Resultado: "+stack.pop());
+				int resultado = 0;
+				if(selectedDesignPattern==1) {
+					resultado = stack.pop();
+				} else if(selectedDesignPattern==2) {
+					if(selectedList==1) {
+						SinglyLinkedList<Integer> currentList = (SinglyLinkedList<Integer>)list;
+						resultado = (int)currentList.removeFirst();
+					}else if(selectedList==2) {
+						DoublyLinkedList<Integer> currentList = (DoublyLinkedList<Integer>)list;
+						resultado = (int)currentList.removeLast();
+					}else if(selectedList==3) {
+						CircularList<Integer> currentList = (CircularList<Integer>)list;
+						resultado = (int)currentList.removeLast();
+					}
+				}
+				Label label = new Label("Resultado: "+resultado);
 				Region p = new Region();
 				p.setPrefSize(347.0, 4.0);
 				Line linee = new Line(0, 0, 350, 0);
@@ -104,8 +214,13 @@ public class MainController {
 	
 	@FXML
     public void initialize() {
-		stack = new StackImp();
+		//Se inicializa la computadora
 		calculator = new ImpCalculadora();
+		//Se inicializan los combobox
+		comboBox1.getItems().addAll("Stack","Lista");
+		pathTextField.setDisable(true);
+		comboBox2.setDisable(true);
+		button2.setDisable(true);
     }
 	
 }
