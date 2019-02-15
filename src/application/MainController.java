@@ -36,6 +36,14 @@ public class MainController {
 	 */
 	private Stack<Integer> stack;
 	/**
+	 * Factory Stack 
+	 */
+	private StackFactory<Integer> stackFactory;
+	/**
+	 * Factory lista 
+	 */
+	private ListFactory<Integer> listFactory;
+	/**
 	 * Objeto de la clase AbstractList 
 	 */
 	private AbstractList<Integer> list;
@@ -58,10 +66,13 @@ public class MainController {
 	public void changeComboBox() {
 		String selectedValue = comboBox1.getValue();
 		comboBox2.setDisable(false);
-		if(selectedValue.equals("Stack"))
+		if(selectedValue.equals("Stack")) {
+			comboBox2.getItems().clear();
 			comboBox2.getItems().addAll("ArrayList","Lista","Vector");
-		else if(selectedValue.equals("Lista"))
+		}else if(selectedValue.equals("Lista")) {
+			comboBox2.getItems().clear();
 			comboBox2.getItems().addAll("Lista Simple","Lista Doble","Lista Circular");
+		}
 	}
 	/**
 	 *	setea el patron de diseno que se va a usar
@@ -76,25 +87,19 @@ public class MainController {
 			String selectedValue1 = comboBox1.getValue();
 			String selectedValue = comboBox2.getValue();
 			
-			if(selectedValue1.equals("Stack"))
+			if(selectedValue1.equals("Stack")) {
+				stack = stackFactory.getStack(selectedValue);
 				selectedDesignPattern = 1;
-			else if(selectedValue1.equals("Lista"))
+			}else if(selectedValue1.equals("Lista")) {
+				list = listFactory.getList(selectedValue);
 				selectedDesignPattern = 2;
+			}
 			
-			if(selectedValue.equals("ArrayList")) {
-				stack = new StackArrayList<Integer>();
-			}else if(selectedValue.equals("Lista")) {
-				stack = new StackList<Integer>();
-			}else if(selectedValue.equals("Vector")) {
-				stack = new StackVector<Integer>();
-			}else if(selectedValue.equals("Lista Simple")) {
-				list = new SinglyLinkedList<Integer>();
+			if(selectedValue.equals("Lista Simple")) {
 				selectedList=1;
 			}else if(selectedValue.equals("Lista Doble")) {
-				list = new DoublyLinkedList<Integer>();
 				selectedList=2;
 			}else if(selectedValue.equals("Lista Circular")) {
-				list = new CircularList<Integer>();
 				selectedList=3;
 			}
 		}else {
@@ -216,6 +221,9 @@ public class MainController {
     public void initialize() {
 		//Se inicializa la computadora
 		calculator = new ImpCalculadora();
+		//Se inicializan los factorys
+		stackFactory = new StackFactory<Integer>();
+		listFactory = new ListFactory<Integer>();
 		//Se inicializan los combobox
 		comboBox1.getItems().addAll("Stack","Lista");
 		pathTextField.setDisable(true);
