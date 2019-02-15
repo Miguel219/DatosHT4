@@ -1,5 +1,8 @@
 package application;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 public class Node<E>{
    protected E data; // value stored in this element
    protected Node<E> nextElement; // ref to next

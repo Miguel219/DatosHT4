@@ -1,5 +1,8 @@
 package application;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 public abstract class Stack<E> {
 
    public abstract void push(E item);

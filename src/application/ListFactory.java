@@ -1,5 +1,8 @@
 package application;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 class ListFactory<E> {
 
 	public AbstractList<E> getList(String entry) {

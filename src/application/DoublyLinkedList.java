@@ -4,7 +4,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 public class DoublyLinkedList<E> extends AbstractList<E> {
 	protected int count;
 	protected DoublyLinkedNode<E> head;

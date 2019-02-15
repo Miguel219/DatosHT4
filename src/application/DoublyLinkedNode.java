@@ -1,6 +1,9 @@
 package application;
 
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 public class DoublyLinkedNode<E>
 {
 protected E data;

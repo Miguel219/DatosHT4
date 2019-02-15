@@ -1,7 +1,10 @@
 package application;
 
 import java.util.ArrayList;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 public class StackArrayList<E> extends Stack<E>
 {
 	protected ArrayList<E> data;

@@ -13,7 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 public class MainController {
 	
 	@FXML

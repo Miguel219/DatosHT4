@@ -1,5 +1,8 @@
 package application;
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ */
 class StackFactory<E> {
 //selecciona la implementacion a utilizar para un stack
 //se utiliza el patron Factory

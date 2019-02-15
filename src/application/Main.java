@@ -5,8 +5,12 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
-
-
+/**
+ * Silvio Orozco 18282
+ * Jose Castaneda 18161
+ * 
+ * Datos Hoja 4 	Patrones de Diseno 	15/2/2019
+ */
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
